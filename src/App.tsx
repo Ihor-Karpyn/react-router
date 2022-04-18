@@ -1,28 +1,39 @@
-import { useSelector } from 'react-redux';
-
+import React, { FC } from 'react';
+import {
+  Outlet, NavLink,
+} from 'react-router-dom';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import cn from 'classnames';
+import { NavLinkWithSearch } from './componets/NavLinkWithSearch';
 
-import { isLoading, getMessage } from './store';
-
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
-
+export const App: FC = React.memo(() => {
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div>
+      <h1>Bookkeeper! App</h1>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <nav
+        style={{
+          borderBottom: 'solid 1px',
+          paddingBottom: '1rem',
+        }}
+      >
+        <NavLinkWithSearch
+          to="/invoices"
+          className={({ isActive }) => cn({ isActive })}
+        >
+          Invoices
+        </NavLinkWithSearch>
+        {' '}
+        |
+        {' '}
+        <NavLink
+          to="/expenses"
+          className={({ isActive }) => cn({ isActive })}
+        >
+          Expenses
+        </NavLink>
+      </nav>
+      <Outlet />
     </div>
   );
-};
-
-export default App;
+});
